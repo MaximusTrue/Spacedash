@@ -19,14 +19,19 @@ def main():
     clock = pygame.time.Clock()
     running = True
     dt = 0
+    ball_pos = pygame.Vector2(DISPLAY.get_width() / 2, DISPLAY.get_height() / 2)
 
-    #Player Constants
+    #Player One (left) Constants
     playerVel = pygame.Vector2()
     playerVel.xy = 0, 0
-    
-    ball_pos = pygame.Vector2(DISPLAY.get_width() / 2, DISPLAY.get_height() / 2)
     player_pos = pygame.Vector2(DISPLAY.get_width() / 8, DISPLAY.get_height() / 2)
+    playerOneScore = 0
 
+    #Player two (right) Constants
+    player2Vel = pygame.Vector2()
+    player2Vel.xy = 0, 0
+    player2_pos = pygame.Vector2(DISPLAY.get_width() - DISPLAY.get_width() / 8, DISPLAY.get_height() / 2)
+    playerTwoScore = 0
 
     while True:
 
@@ -56,32 +61,58 @@ def main():
         if(ball_pos.y - radius < 0):
             velocity.y = 2.5
 
-        # Player
+        # Player One
         pygame.draw.rect(DISPLAY, "white", (player_pos.x, player_pos.y, 10, 50))
 
-        # Move player up and down
+        #Player Two
+        pygame.draw.rect(DISPLAY, "white", (player2_pos.x, player2_pos.y, 10, 50))
+
+        # Move Player One
         if keys[K_w]:
             player_pos.y -= 3
         if keys[K_s]:
             player_pos.y += 3
+
+        # Move Player Two
+        if keys[K_i]:
+            player2_pos.y -= 3
+        if keys[K_k]:
+            player2_pos.y += 3
         
         # Player collision with walls 
         if player_pos.y < 0:
             player_pos.y = 0
         if player_pos.y + 50 > DISPLAY.get_height():
             player_pos.y = DISPLAY.get_height() - 50
-
+        
+        # Player 2 collision with walls
+        if player2_pos.y < 0:
+            player2_pos.y = 0
+        if player2_pos.y + 50 > DISPLAY.get_height():
+            player2_pos.y = DISPLAY.get_height() - 50
 
         # Collision with player
-        # TODO: If ball hits top/bottom of player, it will bounce of the top/bottom of the player continuning in the same direction
         if ball_pos.x - radius < player_pos.x + 10 and ball_pos.x - radius > player_pos.x and ball_pos.y + radius > player_pos.y and ball_pos.y - radius < player_pos.y + 50:
             velocity.x = 2.5
-        # if ball_pos.x + radius < player_pos.x + 5 and ball_pos.y 
-
-        # Scored
-        if ball_pos.x - radius < 0:
+        
+        # Collision with player 2
+        if ball_pos.x + radius > player2_pos.x and ball_pos.x + radius < player2_pos.x + 10 and ball_pos.y + radius > player2_pos.y and ball_pos.y - radius < player2_pos.y + 50:
+            velocity.x = -2.5
+        
+        # Score Reset
+        #Player 2 Scores
+        if ball_pos.x - radius < 0: 
             ball_pos.x = DISPLAY.get_width() / 2
             ball_pos.y = DISPLAY.get_height() / 2
+            playerTwoScore += 1
+            print(str(playerOneScore) + " - " + str(playerTwoScore))
+
+        #Player 1 Scores
+        if ball_pos.x + radius > DISPLAY.get_width(): 
+            ball_pos.x = DISPLAY.get_width() / 2
+            ball_pos.y = DISPLAY.get_height() / 2
+            playerOneScore += 1
+            print(str(playerOneScore) + " - " + str(playerTwoScore))
 
         if keys[K_SPACE]:
             velocity.xy = -0.25, velocity.y * 0.1
