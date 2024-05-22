@@ -29,6 +29,9 @@ def main():
     ast.xy = DISPLAY.get_width(), random.randint(astClearance, int(groundHeight - astClearance))
     astVel = 1.5
 
+    pointsScored = 0
+    hasScored = False
+
     while True:
 
         for event in pygame.event.get():
@@ -42,6 +45,7 @@ def main():
         if ast.x < -50:
             ast.y = random.randint(astClearance, int(groundHeight - astClearance))
             ast.x = DISPLAY.get_width()
+            hasScored = False
 
         pygame.draw.rect(DISPLAY, "red", (ast.x, ast.y, 50, DISPLAY.get_height() - ast.y)) # Bottom
         pygame.draw.rect(DISPLAY, "red", (ast.x, 0, 50, ast.y - astClearance)) # Top
@@ -71,6 +75,11 @@ def main():
 
         if checkPlayerCollision(player.x, player.y, ast.x, ast.y, astClearance):
             print("Game Over")
+
+        if player.x > ast.x + 50 and not hasScored:
+            pointsScored += 1
+            hasScored = True
+            print("Points: " + str(pointsScored))
 
 
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
