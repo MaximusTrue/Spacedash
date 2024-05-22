@@ -22,15 +22,12 @@ def main():
     groundHeight = DISPLAY.get_height() - DISPLAY.get_height() / 8
     
     MIN_AST_CLEARANCE = 80
-    astClearance = MIN_AST_CLEARANCE
+    astClearance = 150
 
     ast = pygame.Vector2()
 
     ast.xy = DISPLAY.get_width(), random.randint(astClearance, int(groundHeight - astClearance))
     astVel = 1.5
-
-   
-
 
     while True:
 
@@ -72,11 +69,7 @@ def main():
         if player.y < 0:
             player.y = 0
 
-        # if checkPlayerCollision(player.x, player.y, ast.x, ast.y):
-        #     print("Game Over")
-        if ast.x <= player.x + 50 and player.x <= ast.x + 100:
-            print("Game Over")
-        if True:
+        if checkPlayerCollision(player.x, player.y, ast.x, ast.y, astClearance):
             print("Game Over")
 
 
@@ -84,9 +77,7 @@ def main():
         pygame.display.update()
         pygame.time.delay(10)
 
-def checkPlayerCollision(x1, y1, x2, y2):
-    # return (x2 <= x1 + 50 and x1 + 50 <= x2 + 50 and x1 <= x2 + 50)
-    # return (x2 <= x1 + 50 and x1 <= x2 + 50)
-    return True
+def checkPlayerCollision(x1, y1, x2, y2, astClearance):
+    return (x2 <= x1 + 50 and x1 <= x2 + 50) and (y1 + 50 >= y2 or y1 <= y2 - astClearance)
     
 main()
