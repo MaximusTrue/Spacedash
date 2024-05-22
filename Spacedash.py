@@ -73,7 +73,7 @@ def main():
         if player.y < 0:
             player.y = 0
 
-        if checkPlayerCollision(player.x, player.y, ast.x, ast.y, astClearance):
+        if checkWallCollision(player.x, player.y, ast.x, ast.y, astClearance):
             print("Game Over")
 
         if player.x > ast.x + 50 and not hasScored:
@@ -86,7 +86,10 @@ def main():
         pygame.display.update()
         pygame.time.delay(10)
 
-def checkPlayerCollision(x1, y1, x2, y2, astClearance):
+def checkWallCollision(x1, y1, x2, y2, astClearance):
     return (x2 <= x1 + 50 and x1 <= x2 + 50) and (y1 + 50 >= y2 or y1 <= y2 - astClearance)
+
+def checkCollision(x1, y1, width_1, height_1, x2, y2, width_2, height_2):
+    return x1 + width_1 >= x2 and x1 <= x2 + width_2 and y1 + width_1 >= y2 and y1 <= y2 + height_2
     
 main()
