@@ -43,9 +43,9 @@ def main():
     while True:
 
         if(playerOneScore == 5):
-            break
+            pass
         if(playerTwoScore == 5):
-            break
+            pass
 
         keys = pygame.key.get_pressed()
 
