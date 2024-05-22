@@ -46,13 +46,10 @@ def main():
             ast.y = random.randint(astClearance, int(groundHeight - astClearance))
             ast.x = DISPLAY.get_width()
 
-        pygame.draw.rect(DISPLAY, "red", (ast.x, ast.y, 50, DISPLAY.get_height() - ast.y))
-        pygame.draw.rect(DISPLAY, "red", (ast.x, 0, 50, ast.y - astClearance))
+        pygame.draw.rect(DISPLAY, "red", (ast.x, ast.y, 50, DISPLAY.get_height() - ast.y)) # Bottom
+        pygame.draw.rect(DISPLAY, "red", (ast.x, 0, 50, ast.y - astClearance)) # Top
 
         ast.x = ast.x - astVel
-
-        #Create random obstical TOP
-
 
         #Player
         pygame.draw.rect(DISPLAY, BLUE, (player.x, player.y, 50, 50))
@@ -74,16 +71,22 @@ def main():
         
         if player.y < 0:
             player.y = 0
-       
 
+        # if checkPlayerCollision(player.x, player.y, ast.x, ast.y):
+        #     print("Game Over")
+        if ast.x <= player.x + 50 and player.x <= ast.x + 100:
+            print("Game Over")
+        if True:
+            print("Game Over")
 
 
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
         pygame.display.update()
         pygame.time.delay(10)
 
-    def checkPlayerCollision(x1, y1, x2, y2):
-        # return x - radius < player_pos.x + 10 and ball_pos.x - radius > player_pos.x and ball_pos.y + radius > player_pos.y and ball_pos.y - radius < player_pos.y + 50
-        pass
-
+def checkPlayerCollision(x1, y1, x2, y2):
+    # return (x2 <= x1 + 50 and x1 + 50 <= x2 + 50 and x1 <= x2 + 50)
+    # return (x2 <= x1 + 50 and x1 <= x2 + 50)
+    return True
+    
 main()
