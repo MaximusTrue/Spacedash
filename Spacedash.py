@@ -53,12 +53,18 @@ def main():
             if event.type==QUIT:
                 pygame.quit()
                 sys.exit()
+            #Test Inverse
             if event.type == pygame.KEYDOWN and event.key==K_UP:
                 inverse = True
+            #Invincible
             if event.type == pygame.KEYDOWN and event.key==K_RETURN and collectableScore - 5 >= 0:
                 invincible = True
                 collectableScore -= 5
                 invincibleTimeout += 500
+            #Slow Down
+            if event.type == pygame.KEYDOWN and event.key == K_RSHIFT and collectableScore - 5>= 0:
+                gameVel = gameVel / 2
+                collectableScore -= 5
 
         DISPLAY.fill(WHITE)
 
@@ -164,6 +170,9 @@ def main():
             invincible = False
             invincibleTimer = 0
             invincibleTimeout = 0
+        
+        
+
 
 
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
