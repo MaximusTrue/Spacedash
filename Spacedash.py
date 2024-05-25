@@ -43,6 +43,10 @@ def main():
 
     inverse = False
 
+    invincible = False
+    invincibleTimer = 0
+    invincibleTimeout = 0
+
     while True:
 
         for event in pygame.event.get():
@@ -51,10 +55,14 @@ def main():
                 sys.exit()
             if event.type == pygame.KEYDOWN and event.key==K_UP:
                 inverse = True
+            if event.type == pygame.KEYDOWN and event.key==K_RETURN and collectableScore - 5 >= 0:
+                invincible = True
+                collectableScore -= 5
+                invincibleTimeout += 500
 
         DISPLAY.fill(WHITE)
 
-        #Create random obstical BOTTOM
+        #Create random obstical
         if wall.x < -50:
             wall.y = random.randint(75+wallClearance, int(groundHeight - 75)) # - wallClearance
             wall.x = DISPLAY.get_width()
@@ -65,9 +73,10 @@ def main():
 
         wall.x = wall.x - gameVel
 
-        #Player
+        #Player Gravity
         pygame.draw.rect(DISPLAY, BLUE, (player.x, player.y, 50, 50))
         player.y = player.y + playerVel
+
         if not inverse:
             playerVel += playerAccel
         else:
@@ -94,11 +103,8 @@ def main():
             playerVel = -0.6
             player.y += 3.5
 
-
-        
-
         #Die
-        if checkWallCollision(player.x, player.y, wall.x, wall.y, wallClearance):
+        if checkWallCollision(player.x, player.y, wall.x, wall.y, wallClearance) and not invincible:
             gameVel = 0
             playerVel = 0
             dead = True
@@ -118,6 +124,7 @@ def main():
             collectableScore = 0
             inverse = False
 
+        #Score Points
         if player.x > wall.x + 50 and not hasScored:
             pointsScored += 1
             hasScored = True
@@ -127,14 +134,17 @@ def main():
         pygame.draw.rect(DISPLAY, "green", (collectable.x, collectable.y, 15, 15))
         collectable.x -= gameVel
 
+        #Respawn Collectable if not Collected
         if(collectable.x < 0):
             collectable.xy = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2) ), random.randint(15, int(groundHeight - 15))
         
+        #Collecting Collectable
         if checkCollision(player.x, player.y, 50, 50, collectable.x, collectable.y, 15, 15):
             collectableScore = collectableScore + 1
             collectable.x = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2))
             collectable.y = random.randint(15, int(groundHeight - 15))
         
+        #Making Sure Collectable isn't in a Wall
         if checkWallCollision(collectable.x, collectable.y, wall.x, wall.y, wallClearance):
             collectable.x = collectable.x - 100
         
@@ -145,6 +155,15 @@ def main():
         #Collectable Counter Display
         collectableText = myFontSmall.render("Counter: " + str(collectableScore), True, "black")
         DISPLAY.blit(collectableText, (0,0))
+
+        if invincible:
+            invincibleTimer += 1
+            print(invincibleTimer)
+
+        if invincibleTimer == invincibleTimeout:
+            invincible = False
+            invincibleTimer = 0
+            invincibleTimeout = 0
 
 
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
