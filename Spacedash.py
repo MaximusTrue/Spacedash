@@ -41,12 +41,16 @@ def main():
 
     dead = False
 
+    inverse = False
+
     while True:
 
         for event in pygame.event.get():
             if event.type==QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.KEYDOWN and event.key==K_UP:
+                inverse = True
 
         DISPLAY.fill(WHITE)
 
@@ -64,7 +68,10 @@ def main():
         #Player
         pygame.draw.rect(DISPLAY, BLUE, (player.x, player.y, 50, 50))
         player.y = player.y + playerVel
-        playerVel += playerAccel
+        if not inverse:
+            playerVel += playerAccel
+        else:
+            playerVel -= playerAccel
 
         #Ground
         pygame.draw.rect(DISPLAY, "black", (0, groundHeight, DISPLAY.get_width(), 10))
@@ -72,15 +79,23 @@ def main():
         #Slide on ground
         if player.y + 50 > groundHeight:
             player.y = groundHeight - 50
-
-        keys = pygame.key.get_pressed()
-        if keys[K_SPACE]and not dead:
-            playerVel = 0.6
-            player.y -= 3.5 #4
-            
         
+        #Slide on Ceiling
         if player.y < 0:
             player.y = 0
+
+        keys = pygame.key.get_pressed()
+
+        #Flying
+        if keys[K_SPACE]and not dead and not inverse:
+            playerVel = 0.6
+            player.y -= 3.5 #4
+        elif keys[K_SPACE] and not dead:
+            playerVel = -0.6
+            player.y += 3.5
+
+
+        
 
         #Die
         if checkWallCollision(player.x, player.y, wall.x, wall.y, wallClearance):
@@ -101,7 +116,7 @@ def main():
             dead = False
             collectable.xy = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2) ), random.randint(15, int(groundHeight - 15))
             collectableScore = 0
-
+            inverse = False
 
         if player.x > wall.x + 50 and not hasScored:
             pointsScored += 1
