@@ -50,9 +50,9 @@ def main():
 
     #Black Hole
     blackhole = pygame.Vector2()
-    blackhole.xy = random.randint(3, 3) * DISPLAY.get_width(), wall.y - wallClearance # 7-10 good range
+    blackholeRandX = random.randint(7, 7) # 7-10 good range
+    blackhole.xy = 100000, 0
     inBlackHole = False
-
 
     while True:
 
@@ -73,14 +73,12 @@ def main():
                 gameVel = gameVel / 2
                 collectableScore -= 5
 
+        print(blackhole.x, wall.x)
         DISPLAY.fill(WHITE)
 
         #Black Hole
-        if blackhole.x < -50:
+        if blackhole.x <= -50:
             blackhole.x = DISPLAY.get_width() * random.randint(7, 10)
-
-        pygame.draw.rect(DISPLAY, "purple", (blackhole.x+5, blackhole.y, 45, DISPLAY.get_height()))
-        blackhole.x = blackhole.x - gameVel
 
         if checkCollision(player.x, player.y, 50, 50, blackhole.x + 50, blackhole.y, 50, DISPLAY.get_height()):
             inBlackHole = True
@@ -95,16 +93,21 @@ def main():
             blackholeTimer = 0
             inBlackHole = False
 
-        #Create random obstical
+        #Reset Wall
         if wall.x < -50:
             wall.y = random.randint(75+wallClearance, int(groundHeight - 75)) # - wallClearance
             wall.x = DISPLAY.get_width()
             hasScored = False
-            blackhole.x += 50
-            blackhole.y = 0
+            if blackholeRandX - 1 == pointsScored:
+                blackhole.x = wall.x
 
+        pygame.draw.rect(DISPLAY, "purple", (blackhole.x, blackhole.y, 50, DISPLAY.get_height()))
+         #Create random obstical
         pygame.draw.rect(DISPLAY, "red", (wall.x, wall.y, 50, DISPLAY.get_height())) # Bottom
         pygame.draw.rect(DISPLAY, "red", (wall.x, 0, 50, wall.y - wallClearance)) # Top
+        
+        
+        blackhole.x = blackhole.x - gameVel
 
         wall.x = wall.x - gameVel
 
@@ -167,6 +170,8 @@ def main():
             hasScored = True
             gameVel += 1.5*0.1
 
+
+
         #Collectable
         pygame.draw.rect(DISPLAY, "green", (collectable.x, collectable.y, 15, 15))
         collectable.x -= gameVel
@@ -201,6 +206,11 @@ def main():
             invincible = False
             invincibleTimer = 0
             invincibleTimeout = 0
+
+        if keys[K_LEFT]:
+            gameVel = gameVel - 0.01
+        if keys[K_RIGHT]:
+            gameVel = gameVel + 0.01
 
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
         pygame.display.update()
