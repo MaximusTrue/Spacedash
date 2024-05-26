@@ -50,9 +50,9 @@ def main():
 
     #Black Hole
     blackhole = pygame.Vector2()
-    blackholeRandX = random.randint(7, 7) # 7-10 good range
     blackhole.xy = 100000, 0
     inBlackHole = False
+    blackholePosOffScore = random.randint(7, 7) + pointsScored
 
     while True:
 
@@ -77,12 +77,10 @@ def main():
         DISPLAY.fill(WHITE)
 
         #Black Hole
-        if blackhole.x <= -50:
-            blackhole.x = DISPLAY.get_width() * random.randint(7, 10)
-
         if checkCollision(player.x, player.y, 50, 50, blackhole.x + 50, blackhole.y, 50, DISPLAY.get_height()):
             inBlackHole = True
             inverse = True
+            blackholePosOffScore = random.randint(7, 10) + pointsScored
 
         if inBlackHole:
             blackholeTimer += 1
@@ -98,7 +96,7 @@ def main():
             wall.y = random.randint(75+wallClearance, int(groundHeight - 75)) # - wallClearance
             wall.x = DISPLAY.get_width()
             hasScored = False
-            if blackholeRandX - 1 == pointsScored:
+            if blackholePosOffScore - 1 == pointsScored:
                 blackhole.x = wall.x
 
         pygame.draw.rect(DISPLAY, "purple", (blackhole.x, blackhole.y, 50, DISPLAY.get_height()))
@@ -161,8 +159,10 @@ def main():
             collectable.xy = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2) ), random.randint(15, int(groundHeight - 15))
             collectableScore = 0
             inverse = False
-            blackhole.xy = random.randint(7, 10) * DISPLAY.get_width(), 0
+            blackhole.xy = 1000000, 0
             inBlackHole = False
+            blackholePosOffScore = random.randint(7, 10) + pointsScored
+            blackholeTimer = 0
 
         #Score Points
         if player.x > wall.x + 50 and not hasScored:
