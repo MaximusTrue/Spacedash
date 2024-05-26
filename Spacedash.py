@@ -41,11 +41,18 @@ def main():
 
     dead = False
 
-    inverse = False
-
     invincible = False
     invincibleTimer = 0
     invincibleTimeout = 0
+
+    inverse = False
+    blackholeTimer = 0
+
+    #Black Hole
+    blackhole = pygame.Vector2()
+    blackhole.xy = random.randint(3, 3) * DISPLAY.get_width(), wall.y - wallClearance # 7-10 good range
+    inBlackHole = False
+
 
     while True:
 
@@ -68,11 +75,33 @@ def main():
 
         DISPLAY.fill(WHITE)
 
+        #Black Hole
+        if blackhole.x < -50:
+            blackhole.x = DISPLAY.get_width() * random.randint(7, 10)
+
+        pygame.draw.rect(DISPLAY, "purple", (blackhole.x+5, blackhole.y, 45, DISPLAY.get_height()))
+        blackhole.x = blackhole.x - gameVel
+
+        if checkCollision(player.x, player.y, 50, 50, blackhole.x + 50, blackhole.y, 50, DISPLAY.get_height()):
+            inBlackHole = True
+            inverse = True
+
+        if inBlackHole:
+            blackholeTimer += 1
+            print(blackholeTimer)
+
+        if blackholeTimer == 1000:
+            inverse = False
+            blackholeTimer = 0
+            inBlackHole = False
+
         #Create random obstical
         if wall.x < -50:
             wall.y = random.randint(75+wallClearance, int(groundHeight - 75)) # - wallClearance
             wall.x = DISPLAY.get_width()
             hasScored = False
+            blackhole.x += 50
+            blackhole.y = 0
 
         pygame.draw.rect(DISPLAY, "red", (wall.x, wall.y, 50, DISPLAY.get_height())) # Bottom
         pygame.draw.rect(DISPLAY, "red", (wall.x, 0, 50, wall.y - wallClearance)) # Top
@@ -129,6 +158,8 @@ def main():
             collectable.xy = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2) ), random.randint(15, int(groundHeight - 15))
             collectableScore = 0
             inverse = False
+            blackhole.xy = random.randint(7, 10) * DISPLAY.get_width(), 0
+            inBlackHole = False
 
         #Score Points
         if player.x > wall.x + 50 and not hasScored:
@@ -170,10 +201,6 @@ def main():
             invincible = False
             invincibleTimer = 0
             invincibleTimeout = 0
-        
-        
-
-
 
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
         pygame.display.update()
