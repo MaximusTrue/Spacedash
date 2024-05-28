@@ -82,10 +82,12 @@ def main():
             inverse = True
             blackholePosOffScore = random.randint(7, 10) + pointsScored
 
+        #Start Black Hole Timer
         if inBlackHole:
             blackholeTimer += 1
             print(blackholeTimer)
 
+        #Stop Inverse Time
         if blackholeTimer == 1000:
             inverse = False
             blackholeTimer = 0
@@ -100,7 +102,7 @@ def main():
                 blackhole.x = wall.x
 
         pygame.draw.rect(DISPLAY, "purple", (blackhole.x, blackhole.y, 50, DISPLAY.get_height()))
-         #Create random obstical
+        #Create random obstical
         pygame.draw.rect(DISPLAY, "red", (wall.x, wall.y, 50, DISPLAY.get_height())) # Bottom
         pygame.draw.rect(DISPLAY, "red", (wall.x, 0, 50, wall.y - wallClearance)) # Top
         
