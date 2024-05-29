@@ -109,13 +109,13 @@ def main():
         pygame.draw.rect(DISPLAY, "red", (wall.x, wall.y, 50, DISPLAY.get_height())) # Bottom
         pygame.draw.rect(DISPLAY, "red", (wall.x, 0, 50, wall.y - wallClearance)) # Top
         
-        
         blackhole.x = blackhole.x - gameVel
 
         wall.x = wall.x - gameVel
 
         #Player Gravity
-        pygame.draw.rect(DISPLAY, BLUE, (player.x, player.y, 50, 50))
+        # pygame.draw.rect(DISPLAY, BLUE, (player.x, player.y, 50, 50))
+        DISPLAY.blit(pygame.image.load('fx/gfx/UFO1.png'), (player.x - 40, player.y - 25))
         player.y = player.y + playerVel
 
         if not inverse:
