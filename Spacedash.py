@@ -78,7 +78,7 @@ def main():
                 collectableScore -= 5
 
         #Black Hole
-        if checkCollision(player.x, player.y, 50, 50, blackhole.x + 50, blackhole.y, 50, DISPLAY.get_height()) and not inBlackHole:
+        if checkCollision(player.x, player.y, 50, blackhole.x + 50, blackhole.y, 50, DISPLAY.get_height()) and not inBlackHole:
             inBlackHole = True
             inverse = not inverse
             blackholePosOffScore = random.randint(7, 10) + pointsScored
@@ -180,7 +180,7 @@ def main():
             collectable.xy = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2) ), random.randint(15, int(groundHeight - 15))
         
         #Collecting Collectable
-        if checkCollision(player.x, player.y, 50, 50, collectable.x, collectable.y, 13, 22):
+        if checkCollision(player.x, player.y, 50, collectable.x, collectable.y, 13, 22):
             collectableScore = collectableScore + 1
             collectable.x = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2))
             collectable.y = random.randint(15, int(groundHeight - 15))
@@ -223,7 +223,7 @@ def main():
 def checkWallCollision(x1, y1, x2, y2, wallClearance):
     return (x2 <= x1 + 50 and x1 <= x2 + 50) and (y1 + 50 >= y2 or y1 <= y2 - wallClearance)
 
-def checkCollision(x1, y1, width_1, height_1, x2, y2, width_2, height_2):
+def checkCollision(x1, y1, width_1, x2, y2, width_2, height_2):
     return x1 + width_1 >= x2 and x1 <= x2 + width_2 and y1 + width_1 >= y2 and y1 <= y2 + height_2
     
 main()
