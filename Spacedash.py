@@ -176,7 +176,8 @@ def main():
             gameVel += 3*0.1
 
         #Collectable
-        pygame.draw.rect(DISPLAY, "green", (collectable.x, collectable.y, 15, 15))
+        # pygame.draw.rect(DISPLAY, "green", (collectable.x, collectable.y, 15, 15))
+        DISPLAY.blit(pygame.image.load('fx/gfx/PowerCellResize.png'), (collectable.x, collectable.y))
         collectable.x -= gameVel
 
         #Respawn Collectable if not Collected
