@@ -55,6 +55,7 @@ def main():
     blackholePosOffScore = random.randint(7, 7) + pointsScored
 
     while True:
+        DISPLAY.fill(WHITE)
 
         for event in pygame.event.get():
             if event.type==QUIT:
@@ -73,25 +74,23 @@ def main():
                 gameVel = gameVel / 2
                 collectableScore -= 5
 
-        print(blackhole.x, wall.x)
-        DISPLAY.fill(WHITE)
-
         #Black Hole
-        if checkCollision(player.x, player.y, 50, 50, blackhole.x + 50, blackhole.y, 50, DISPLAY.get_height()):
+        if checkCollision(player.x, player.y, 50, 50, blackhole.x + 50, blackhole.y, 50, DISPLAY.get_height()) and not inBlackHole:
             inBlackHole = True
-            inverse = True
+            inverse = not inverse
+            if inverse:
+                print("INVERSED")
             blackholePosOffScore = random.randint(7, 10) + pointsScored
+            print("IN BLACK HOLE")
 
-        #Start Black Hole Timer
         if inBlackHole:
             blackholeTimer += 1
-            print(blackholeTimer)
 
         #Stop Inverse Time
-        if blackholeTimer == 1000:
-            inverse = False
+        if blackholeTimer == 200:
             blackholeTimer = 0
             inBlackHole = False
+            print("BLACKHOLE OVER")
 
         #Reset Wall
         if wall.x < -50:
@@ -172,8 +171,6 @@ def main():
             hasScored = True
             gameVel += 1.5*0.1
 
-
-
         #Collectable
         pygame.draw.rect(DISPLAY, "green", (collectable.x, collectable.y, 15, 15))
         collectable.x -= gameVel
@@ -209,9 +206,9 @@ def main():
             invincibleTimer = 0
             invincibleTimeout = 0
 
-        if keys[K_LEFT]:
+        if keys[K_a]:
             gameVel = gameVel - 0.01
-        if keys[K_RIGHT]:
+        if keys[K_d]:
             gameVel = gameVel + 0.01
 
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
