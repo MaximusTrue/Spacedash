@@ -55,6 +55,8 @@ def main():
     inBlackHole = False
     blackholePosOffScore = random.randint(7, 7) + pointsScored
 
+    
+
     while True:
         DISPLAY.fill(WHITE)
 
@@ -101,7 +103,8 @@ def main():
             if blackholePosOffScore - 1 == pointsScored:
                 blackhole.x = wall.x
 
-        pygame.draw.rect(DISPLAY, "purple", (blackhole.x, blackhole.y, 50, DISPLAY.get_height()))
+        DISPLAY.blit(pygame.image.load('fx/gfx/BlackholeResize.png'), (blackhole.x, wall.y - wallClearance))
+        
         #Create random obstical
         pygame.draw.rect(DISPLAY, "red", (wall.x, wall.y, 50, DISPLAY.get_height())) # Bottom
         pygame.draw.rect(DISPLAY, "red", (wall.x, 0, 50, wall.y - wallClearance)) # Top
