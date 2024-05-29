@@ -198,8 +198,10 @@ def main():
         DISPLAY.blit(scoreText, (DISPLAY.get_width() / 2 - 50, 0))
 
         #Collectable Counter Display
-        collectableText = myFontSmall.render("Counter: " + str(collectableScore), True, "black")
-        DISPLAY.blit(collectableText, (0,0))
+        DISPLAY.blit(pygame.image.load('fx/gfx/PowerCellResize.png'), (5, 5))
+        DISPLAY.blit(pygame.image.load('fx/gfx/TimesResize.png'), (23, 9))
+        collectableText = myFontSmall.render(str(collectableScore), True, "black")
+        DISPLAY.blit(collectableText, (50,5))
 
         if invincible:
             invincibleTimer += 1
