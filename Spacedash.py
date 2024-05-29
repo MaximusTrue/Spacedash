@@ -4,7 +4,8 @@ from pygame.locals import *
 
 def main():
 
-    gameVel = 1.5
+    defaultPlayerVel = 0.3 #0.6
+    gameVel = 3 #1.5
     
     pygame.init()
     myFont = pygame.font.Font(None, 200)
@@ -20,8 +21,8 @@ def main():
 
     player = pygame.Vector2()
     player.xy = 200,200
-    playerVel = 0.6
-    playerAccel = 0.03
+    playerVel = defaultPlayerVel
+    playerAccel = 0.08 #0.03
 
     groundHeight = DISPLAY.get_height() - DISPLAY.get_height() / 8
     
@@ -71,7 +72,7 @@ def main():
                 invincibleTimeout += 500
             #Slow Down
             if event.type == pygame.KEYDOWN and event.key == K_RSHIFT and collectableScore - 5>= 0:
-                gameVel = gameVel / 2
+                gameVel = gameVel * .75
                 collectableScore -= 5
 
         #Black Hole
@@ -134,11 +135,11 @@ def main():
 
         #Flying
         if keys[K_SPACE]and not dead and not inverse:
-            playerVel = 0.6
-            player.y -= 3.5 #4
+            playerVel = defaultPlayerVel
+            player.y -= 4 #3.5 #4
         elif keys[K_SPACE] and not dead:
-            playerVel = -0.6
-            player.y += 3.5
+            playerVel = -defaultPlayerVel
+            player.y += 4 
 
         #Die
         if checkWallCollision(player.x, player.y, wall.x, wall.y, wallClearance) and not invincible:
@@ -150,8 +151,8 @@ def main():
         
         #Reset
         if dead and keys[K_p]:
-            gameVel = 1.5
-            playerVel = 0.6
+            gameVel = 3 #1.5
+            playerVel = defaultPlayerVel
             player.xy = 200,200
             wall.xy = DISPLAY.get_width(), random.randint(75+wallClearance, int(groundHeight - 75))
             pointsScored = 0
@@ -169,7 +170,7 @@ def main():
         if player.x > wall.x + 50 and not hasScored:
             pointsScored += 1
             hasScored = True
-            gameVel += 1.5*0.1
+            gameVel += 3*0.1
 
         #Collectable
         pygame.draw.rect(DISPLAY, "green", (collectable.x, collectable.y, 15, 15))
@@ -207,9 +208,9 @@ def main():
             invincibleTimeout = 0
 
         if keys[K_a]:
-            gameVel = gameVel - 0.01
+            gameVel = gameVel - 0.1
         if keys[K_d]:
-            gameVel = gameVel + 0.01
+            gameVel = gameVel + 0.1
 
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
         pygame.display.update()
