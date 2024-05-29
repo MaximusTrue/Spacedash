@@ -114,8 +114,8 @@ def main():
         wall.x = wall.x - gameVel
 
         #Player Gravity
-        # pygame.draw.rect(DISPLAY, BLUE, (player.x, player.y, 50, 50))
         DISPLAY.blit(pygame.image.load('fx/gfx/UFO1.png'), (player.x - 40, player.y - 25))
+        # DISPLAY.blit(pygame.image.load('fx/gfx/fixed_UFO_Resize.png'), (player.x, player.y))
         player.y = player.y + playerVel
 
         if not inverse:
@@ -161,7 +161,7 @@ def main():
             pointsScored = 0
             hasScored = False
             dead = False
-            collectable.xy = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2) ), random.randint(15, int(groundHeight - 15))
+            collectable.xy = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2) ), random.randint(22, int(groundHeight - 22))
             collectableScore = 0
             inverse = False
             blackhole.xy = 1000000, 0
@@ -176,7 +176,6 @@ def main():
             gameVel += 3*0.1
 
         #Collectable
-        # pygame.draw.rect(DISPLAY, "green", (collectable.x, collectable.y, 15, 15))
         DISPLAY.blit(pygame.image.load('fx/gfx/PowerCellResize.png'), (collectable.x, collectable.y))
         collectable.x -= gameVel
 
@@ -185,7 +184,7 @@ def main():
             collectable.xy = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2) ), random.randint(15, int(groundHeight - 15))
         
         #Collecting Collectable
-        if checkCollision(player.x, player.y, 50, 50, collectable.x, collectable.y, 15, 15):
+        if checkCollision(player.x, player.y, 50, 50, collectable.x, collectable.y, 13, 22):
             collectableScore = collectableScore + 1
             collectable.x = random.randint(DISPLAY.get_width(), DISPLAY.get_width() + int(DISPLAY.get_width() / 2))
             collectable.y = random.randint(15, int(groundHeight - 15))
