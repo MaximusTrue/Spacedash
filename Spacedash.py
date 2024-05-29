@@ -81,10 +81,7 @@ def main():
         if checkCollision(player.x, player.y, 50, 50, blackhole.x + 50, blackhole.y, 50, DISPLAY.get_height()) and not inBlackHole:
             inBlackHole = True
             inverse = not inverse
-            if inverse:
-                print("INVERSED")
             blackholePosOffScore = random.randint(7, 10) + pointsScored
-            print("IN BLACK HOLE")
 
         if inBlackHole:
             blackholeTimer += 1
@@ -93,7 +90,6 @@ def main():
         if blackholeTimer == 200:
             blackholeTimer = 0
             inBlackHole = False
-            print("BLACKHOLE OVER")
 
         #Reset Wall
         if wall.x < -50:
@@ -114,14 +110,7 @@ def main():
         wall.x = wall.x - gameVel
 
         #Player Gravity
-        DISPLAY.blit(pygame.image.load('fx/gfx/UFO1.png'), (player.x - 40, player.y - 25))
-        # DISPLAY.blit(pygame.image.load('fx/gfx/fixed_UFO_Resize.png'), (player.x, player.y))
         player.y = player.y + playerVel
-
-        if not inverse:
-            playerVel += playerAccel
-        else:
-            playerVel -= playerAccel
 
         #Ground
         pygame.draw.rect(DISPLAY, "black", (0, groundHeight, DISPLAY.get_width(), 10))
@@ -133,6 +122,13 @@ def main():
         #Slide on Ceiling
         if player.y < 0:
             player.y = 0
+        
+        if not inverse:
+            playerVel += playerAccel
+            DISPLAY.blit(pygame.image.load('fx/gfx/UFO1.png'), (player.x - 40, player.y - 25))
+        else:
+            playerVel -= playerAccel
+            DISPLAY.blit(pygame.transform.flip(pygame.image.load('fx/gfx/UFO1.png'), False, True), (player.x - 40, player.y - 25))
 
         keys = pygame.key.get_pressed()
 
@@ -143,7 +139,7 @@ def main():
         elif keys[K_SPACE] and not dead:
             playerVel = -defaultPlayerVel
             player.y += 4 
-
+        
         #Die
         if checkWallCollision(player.x, player.y, wall.x, wall.y, wallClearance) and not invincible:
             gameVel = 0
@@ -211,11 +207,14 @@ def main():
             invincible = False
             invincibleTimer = 0
             invincibleTimeout = 0
-
-        if keys[K_a]:
-            gameVel = gameVel - 0.1
-        if keys[K_d]:
-            gameVel = gameVel + 0.1
+        
+        if not dead:
+            if gameVel < 3:
+                gameVel = 3
+            if gameVel > 11:
+                gameVel = 11
+            
+        
 
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
         pygame.display.update()

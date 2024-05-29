@@ -212,6 +212,12 @@ def main():
         if keys[K_d]:
             gameVel = gameVel + 0.1
 
+        if not dead:
+            if gameVel < 3:
+                gameVel = 3
+            if gameVel > 11:
+                gameVel = 11
+
         pygame.draw.rect(DISPLAY, "white", (0, groundHeight + 10, DISPLAY.get_width(), DISPLAY.get_height() - groundHeight))
         pygame.display.update()
         pygame.time.delay(10)
