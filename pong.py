@@ -11,6 +11,7 @@ def main():
 
     WHITE = (255,255,255)
     BLUE = (0,0,255)
+    BLACK = (0, 0, 0)
     
     #Ball Constants
     radius = 12
@@ -131,7 +132,7 @@ def main():
             playerOneScore += 1
             defaultBallVel.xy = 2.5, 2.5
             
-        score_text = myFont.render(f"{playerOneScore}       -       {playerTwoScore}", True, WHITE)
+        score_text = myFont.render(f"{playerOneScore}       -       {playerTwoScore}", True, BLACK)
 
         DISPLAY.blit(score_text, (DISPLAY.get_width() / 2 - 125, DISPLAY.get_height() / 20))
 
