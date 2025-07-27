@@ -1,12 +1,7 @@
-**To Play Pong**
+Spacedash
 
-**Player One (left) Controls**
-Up = W
-Down = S
+Spacebar to fly
 
-**Player Two (Right) Controls**
-Up = I
-Down = K
+R-Shift to use battery packs to slow down (need 5 batteries)
 
-In pong, as the rounds progress, the ball gets faster. The game is done once a user score is 7
-
+Blackholes inverse gravity
